@@ -7,7 +7,16 @@ import 'package:intl/intl.dart';
 /// and timestamp conversions.
 extension DatetimeExtension on DateTime? {
   /// Locales used for formatting.
-  static const _supportedLocales = ["id_ID", "en_US", "en_GB", "fr_FR", "de_DE", "es_ES", "it_IT", "pt_BR"];
+  static const _supportedLocales = [
+    "id_ID",
+    "en_US",
+    "en_GB",
+    "fr_FR",
+    "de_DE",
+    "es_ES",
+    "it_IT",
+    "pt_BR",
+  ];
 
   /// Returns `true` if the date is null or occurs before the current moment.
   ///
@@ -52,14 +61,17 @@ extension DatetimeExtension on DateTime? {
   /// Returns true if the date occurs on the same calendar day as [other].
   bool isSameDay(DateTime other) {
     if (this == null) return false;
-    return this!.year == other.year && this!.month == other.month && this!.day == other.day;
+    return this!.year == other.year &&
+        this!.month == other.month &&
+        this!.day == other.day;
   }
 
   /// Returns true if the date is today.
   bool isToday() => isSameDay(DateTime.now());
 
   /// Returns true if the date is yesterday.
-  bool isYesterday() => isSameDay(DateTime.now().subtract(const Duration(days: 1)));
+  bool isYesterday() =>
+      isSameDay(DateTime.now().subtract(const Duration(days: 1)));
 
   /// Returns true if the date is tomorrow.
   bool isTomorrow() => isSameDay(DateTime.now().add(const Duration(days: 1)));
@@ -117,7 +129,8 @@ extension DatetimeExtension on DateTime? {
     final today = DateTime.now();
     int age = today.year - this!.year;
 
-    if (today.month < this!.month || (today.month == this!.month && today.day < this!.day)) {
+    if (today.month < this!.month ||
+        (today.month == this!.month && today.day < this!.day)) {
       age--;
     }
 
@@ -128,7 +141,8 @@ extension DatetimeExtension on DateTime? {
   int? toEpoch() => this?.millisecondsSinceEpoch;
 
   /// Converts the date to epoch seconds.
-  int? toEpochSeconds() => this == null ? null : (this!.millisecondsSinceEpoch ~/ 1000);
+  int? toEpochSeconds() =>
+      this == null ? null : (this!.millisecondsSinceEpoch ~/ 1000);
 
   /// Adders / Subtractors
   DateTime? addDays(int days) => this?.add(Duration(days: days));
@@ -154,7 +168,8 @@ extension DatetimeExtension on DateTime? {
     int years = now.year - this!.year;
 
     // if birthday hasn't happened yet this year, subtract one
-    if (now.month < this!.month || (now.month == this!.month && now.day < this!.day)) {
+    if (now.month < this!.month ||
+        (now.month == this!.month && now.day < this!.day)) {
       years--;
     }
 
