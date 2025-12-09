@@ -1,7 +1,7 @@
 // ignore_for_file: constant_identifier_names
 
 import 'package:intl/intl.dart';
-import 'package:xutils/extensions/datetime_extension.dart';
+import 'package:xutils_pack/extensions/datetime_extension.dart';
 
 /// Extension utilities for nullable integers.
 ///

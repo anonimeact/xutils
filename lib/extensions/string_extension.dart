@@ -1,6 +1,6 @@
 import 'package:intl/intl.dart';
-import 'package:xutils/extensions/datetime_extension.dart';
-import 'int_extension.dart'; // for CurrencyCountry enum
+import 'package:xutils_pack/extensions/datetime_extension.dart';
+import 'int_extension.dart'; 
 
 /// Extension utilities for nullable Strings.
 ///
