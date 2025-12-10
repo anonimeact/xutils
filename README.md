@@ -34,7 +34,7 @@ print(priceStr.toCurrency());
 
 ### Piece op test
 
-For other example you can see at [Test](test/all_test.dart)
+For other example you can see at [Test](test/) folder.
 
 ```dart
     test('numericOnly should extract numbers', () {
@@ -57,6 +57,35 @@ For other example you can see at [Test](test/all_test.dart)
       expect("12.5a".toInt(), 12);
       expect("abc".toInt(), null);
       expect(null.toInt(), null);
+    });
+
+    test('sortIt sorts primitives ascending without selector', () {
+      final nums = [3, 1, 5, 2];
+      final sorted = nums.sortIt();
+
+      expect(sorted, [1, 2, 3, 5]);
+      expect(nums, [3, 1, 5, 2]); // original unchanged
+    });
+
+    test('sortIt throws when no selector provided for non-Comparable', () {
+      final list = [
+        {"id": 2},
+        {"id": 1}
+      ];
+
+      expect(() => list.sortIt(), throwsStateError);
+    });
+
+    test('sortIt sorts custom objects using selector', () {
+      final people = [
+        {"name": "Charlie", "age": 30},
+        {"name": "Alice", "age": 20},
+        {"name": "Bob", "age": 25},
+      ];
+
+      final sorted = people.sortIt((p) => p["age"] as int);
+
+      expect(sorted.map((p) => p["age"]), [20, 25, 30]);
     });
 ```
 
