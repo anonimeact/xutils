@@ -87,6 +87,10 @@ For other example you can see at [Test](test/) folder.
 
       expect(sorted.map((p) => p["age"]), [20, 25, 30]);
     });
+
+    // people.sort((a, b) => b.age.compareTo(a.age)); ❌
+    // people.sortIt((p) => p.age); ✅
+
 ```
 
 ## Additional information

@@ -1,6 +1,6 @@
 name: xutils_pack
 description: "XUtils is a Dart/Flutter package that provides a collection of extensions for common data types such as DateTime, double, int, and String."
-version: 1.0.1
+version: 1.0.2
 repository: https://github.com/anonimeact/xutils.git/
 
 environment:

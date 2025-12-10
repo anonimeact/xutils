@@ -1,3 +1,7 @@
+## 1.0.2
+
+* Add list extensions
+
 ## 1.0.1
 
 * Update required parameter and unit test all functions
