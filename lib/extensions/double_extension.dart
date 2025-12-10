@@ -27,21 +27,21 @@ extension DoubleExtension on double? {
   /// ```dart
   /// 12.3456.roundTo(2); // 12.35
   /// ```
-  double roundTo(int fractionDigits) {
+  double roundTo({required int fractionDigits}) {
     if (this == null) return 0.0;
     final factor = Math.pow(10, fractionDigits);
     return (this! * factor).round() / factor;
   }
 
   /// Floors the number to [fractionDigits] decimal places.
-  double floorTo(int fractionDigits) {
+  double floorTo({required int fractionDigits}) {
     if (this == null) return 0.0;
     final factor = Math.pow(10, fractionDigits);
     return (this! * factor).floor() / factor;
   }
 
   /// Ceils the number to [fractionDigits] decimal places.
-  double ceilTo(int fractionDigits) {
+  double ceilTo({required int fractionDigits}) {
     if (this == null) return 0.0;
     final factor = Math.pow(10, fractionDigits);
     return (this! * factor).ceil() / factor;
@@ -117,19 +117,19 @@ extension DoubleExtension on double? {
 
   /// Safely divides this number by [other], returning 0 if either is null
   /// or if dividing by zero.
-  double safeDivide(num? other) {
+  double safeDivide({num? other}) {
     if (this == null || other == null || other == 0) return 0.0;
     return this! / other;
   }
 
   /// Returns this number multiplied safely by [other].
-  double safeMultiply(num? other) {
+  double safeMultiply({num? other}) {
     if (this == null || other == null) return 0.0;
     return this! * other;
   }
 
   /// Clamps the number between [min] and [max].
-  double clamp(double min, double max) {
+  double clamp({required double min, required double max}) {
     final val = safe();
     if (val < min) return min;
     if (val > max) return max;
@@ -137,7 +137,7 @@ extension DoubleExtension on double? {
   }
 
   /// Checks if the number is between [min] and [max].
-  bool isBetween(double min, double max) {
+  bool isBetween({required double min, required double max}) {
     final val = safe();
     return val >= min && val <= max;
   }

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 import 'package:xutils_pack/extensions/datetime_extension.dart';
 import 'int_extension.dart'; 
@@ -36,17 +37,20 @@ extension StringExtension on String? {
   /// Converts a numeric string to a double.
   /// Returns null if parsing fails or string is empty.
   double? toDouble() {
-    final numOnly = numericOnly();
-    if (numOnly == null || numOnly.isEmpty) return null;
-    return double.tryParse(numOnly);
+    if (this == null) return null;
+    final regex = RegExp(r'^-?\d*\.?\d*');
+    final match = regex.firstMatch(this!);
+    final numericString = match?.group(0);
+
+    if (numericString == null || numericString.isEmpty) return null;
+    return double.tryParse(numericString);
   }
 
   /// Converts a numeric string to an integer.
   /// Returns null if parsing fails or string is empty.
   int? toInt() {
-    final numOnly = numericOnly();
-    if (numOnly == null || numOnly.isEmpty) return null;
-    return int.tryParse(numOnly);
+    if (this == null) return null;
+    return toDouble()?.toInt();
   }
 
   /// Checks whether the string contains only numbers.
@@ -72,24 +76,35 @@ extension StringExtension on String? {
   /// ```dart
   /// "12/02/2024".toDateTime("dd/MM/yyyy");
   /// ```
-  DateTime? toDateTime(String format) {
-    if (this == null || this!.trim().isEmpty) return null;
+  DateTime? toDateTime({String? originFormat}) {
+    if (this == null || this!.isEmpty) return null;
 
     for (final locale in _supportedLocales) {
       try {
-        return DateFormat(format, locale).parseStrict(this!);
-      } catch (_) {}
+        return DateFormat(originFormat, locale).parseStrict(this!);
+      } catch (e) {
+        debugPrint('toDateTime $locale');
+      }
     }
     return null;
   }
 
-  /// Formats a parsed date string into the given [targetFormat].
+  /// Formats a parsed date string into the given [originFormat].
   ///
   /// Returns empty string if parsing fails.
-  String formatDate(String targetFormat) {
-    final dt = toDateTime(targetFormat);
+  String formatDateString({String originFormat = 'dd/MM/yyyy', String targetFormat = 'dd/MM/yyyy'}) {
+    if (this == null || this!.isEmpty) return '';
+    final dt = toDateTime(originFormat: originFormat);
     if (dt == null) return "";
-    return DateFormat(targetFormat).format(dt);
+
+    for (final locale in _supportedLocales) {
+      try {
+        return DateFormat(targetFormat, locale).format(dt);
+      } catch (e) {
+        debugPrint('formatDateString $locale');
+      }
+    }
+    return '';
   }
 
   /// Converts the numeric string to Indonesian Rupiah formatted string.
@@ -185,17 +200,17 @@ extension StringExtension on String? {
   /// ```dart
   /// "1234567890".mask(start: 3, end: 7); // "123****890"
   /// ```
-  String mask({int start = 0, int end = 0, String maskChar = '*'}) {
+  String mask({int? start, int? end, String maskChar = '*'}) {
     if (this == null || this!.isEmpty) return '';
     final s = this!;
 
+    if (start == null && end == null) return s;
+    start ??= 0;
+    end ??= this!.length;
+
     if (start >= s.length || end <= start) return s;
 
-    final masked = s.replaceRange(
-      start,
-      end > s.length ? s.length : end,
-      maskChar * (end - start),
-    );
+    final masked = s.replaceRange(start, end > s.length ? s.length : end, maskChar * (end - start));
 
     return masked;
   }
@@ -214,7 +229,7 @@ extension StringExtension on String? {
   }
 
   /// Checks if the string contains ANY of provided patterns.
-  bool containsAny(List<String> patterns) {
+  bool containsAny({required List<String> patterns}) {
     if (this == null) return false;
     return patterns.any((p) => this!.contains(p));
   }

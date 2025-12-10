@@ -29,6 +29,7 @@ print(price.toCurrency());
 
 String priceStr = '20000';
 print(priceStr.toCurrency());
+''
 ```
 
 ## Additional information

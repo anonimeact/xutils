@@ -58,23 +58,23 @@ extension DatetimeExtension on DateTime? {
     return "";
   }
 
-  /// Returns true if the date occurs on the same calendar day as [other].
-  bool isSameDay(DateTime other) {
+  /// Returns true if the date occurs on the same calendar day as [withThis].
+  bool isSameDay({required DateTime withThis}) {
     if (this == null) return false;
-    return this!.year == other.year &&
-        this!.month == other.month &&
-        this!.day == other.day;
+    return this!.year == withThis.year &&
+        this!.month == withThis.month &&
+        this!.day == withThis.day;
   }
 
   /// Returns true if the date is today.
-  bool isToday() => isSameDay(DateTime.now());
+  bool isToday() => isSameDay(withThis: DateTime.now());
 
   /// Returns true if the date is yesterday.
   bool isYesterday() =>
-      isSameDay(DateTime.now().subtract(const Duration(days: 1)));
+      isSameDay(withThis: DateTime.now().subtract(const Duration(days: 1)));
 
   /// Returns true if the date is tomorrow.
-  bool isTomorrow() => isSameDay(DateTime.now().add(const Duration(days: 1)));
+  bool isTomorrow() => isSameDay(withThis: DateTime.now().add(const Duration(days: 1)));
 
   /// Returns the start of the day (00:00:00).
   DateTime? get beginningOfDay {
@@ -145,15 +145,15 @@ extension DatetimeExtension on DateTime? {
       this == null ? null : (this!.millisecondsSinceEpoch ~/ 1000);
 
   /// Adders / Subtractors
-  DateTime? addDays(int days) => this?.add(Duration(days: days));
+  DateTime? addDays({required int days}) => this?.add(Duration(days: days));
 
-  DateTime? addHours(int hours) => this?.add(Duration(hours: hours));
+  DateTime? addHours({required int hours}) => this?.add(Duration(hours: hours));
 
-  DateTime? addMinutes(int minutes) => this?.add(Duration(minutes: minutes));
+  DateTime? addMinutes({required int minutes}) => this?.add(Duration(minutes: minutes));
 
-  DateTime? subtractDays(int days) => this?.subtract(Duration(days: days));
+  DateTime? subtractDays({required int days}) => this?.subtract(Duration(days: days));
 
-  DateTime? subtractHours(int hours) => this?.subtract(Duration(hours: hours));
+  DateTime? subtractHours({required int hours}) => this?.subtract(Duration(hours: hours));
 
   /// Returns the current age in full years.
   ///
@@ -176,29 +176,29 @@ extension DatetimeExtension on DateTime? {
     return years;
   }
 
-  /// Returns the difference between this date and [other]
+  /// Returns the difference between this date and [withThis]
   /// as a Duration.
   /// If either is null, returns Duration.zero.
-  Duration differenceFrom(DateTime? other) {
-    if (this == null || other == null) return Duration.zero;
-    return this!.difference(other);
+  Duration difference({required DateTime? withThis}) {
+    if (this == null || withThis == null) return Duration.zero;
+    return this!.difference(withThis);
   }
 
   /// Absolute difference (ignores positive/negative).
-  Duration differenceAbs(DateTime? other) {
-    final diff = differenceFrom(other);
+  Duration differenceAbs({required DateTime? withThis}) {
+    final diff = difference(withThis: withThis);
     return diff.isNegative ? diff * -1 : diff;
   }
 
   /// Difference in minutes.
   int diffInMinutes(DateTime? other, {bool abs = false}) {
-    final d = abs ? differenceAbs(other) : differenceFrom(other);
+    final d = abs ? differenceAbs(withThis: other) : difference(withThis: other);
     return d.inMinutes;
   }
 
   /// Difference in hours.
   int diffInHours(DateTime? other, {bool abs = false}) {
-    final d = abs ? differenceAbs(other) : differenceFrom(other);
+    final d = abs ? differenceAbs(withThis: other) : difference(withThis: other);
     return d.inHours;
   }
 }
