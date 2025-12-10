@@ -40,9 +40,6 @@ void main() {
     });
 
     // --- Test cases for Date & Time ---
-    
-    // Catatan: toDateTime sangat bergantung pada locale sistem dan format input.
-    // Locale id_ID menggunakan format d/M/yyyy secara default.
     test('toDateTime should parse date strings with specified format', () {
       // Input format: dd/MM/yyyy
       final dateStringID = "25/12/2024";
@@ -86,16 +83,6 @@ void main() {
       expect("1500000".toRupiah(usingSymbol: false), '1.500.000');
       expect("abc".toRupiah(), '');
     });
-
-    // Uncomment this test when CurrencyCountry enum is defined
-    /*
-    test('toCurrency should format string to specified currency', () {
-      expect("15000".toCurrency(country: CurrencyCountry.US), '\$15,000');
-      expect("50.50".toCurrency(country: CurrencyCountry.US, decimalDigits: 2), '\$50.50');
-      expect("10000".toCurrency(country: CurrencyCountry.ID, usingSymbol: false), '10.000');
-    });
-    */
-
 
     // --- Test cases for String manipulation ---
 
