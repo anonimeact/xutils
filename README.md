@@ -34,7 +34,7 @@ print(priceStr.toCurrency());
 
 ### Piece op test
 
-For other example you can see at [Dokumentasi](test/all_test.dart)
+For other example you can see at [Test](test/all_test.dart)
 
 ```dart
     test('numericOnly should extract numbers', () {
