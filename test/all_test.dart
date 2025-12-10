@@ -75,7 +75,6 @@ void main() {
       expect(null.formatTimestampEpoch(), null);
     });
 
-
     // --- Test cases for Currency ---
 
     test('toRupiah should format string to IDR currency', () {

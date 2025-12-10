@@ -32,6 +32,34 @@ print(priceStr.toCurrency());
 ''
 ```
 
+### Piece op test
+
+For other example you can see at [Dokumentasi](test/all_test.dart)
+
+```dart
+    test('numericOnly should extract numbers', () {
+      expect("a1b2c3".numericOnly(), '123');
+      expect("123abc".numericOnly(), '123');
+      expect("abc".numericOnly(), '');
+      expect("123".numericOnly(), '123');
+      expect(null.numericOnly(), null);
+    });
+
+    test('toDouble should parse numeric strings to double', () {
+      expect("12.5a".toDouble(), 12.5);
+      expect("abc".toDouble(), null);
+      expect("".toDouble(), null);
+      expect(null.toDouble(), null);
+    });
+
+    test('toInt should parse numeric strings to int', () {
+      expect("123a".toInt(), 123);
+      expect("12.5a".toInt(), 12);
+      expect("abc".toInt(), null);
+      expect(null.toInt(), null);
+    });
+```
+
 ## Additional information
 
 For more information, contributions, or issues, please visit the repository or contact the package author.
