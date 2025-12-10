@@ -1,10 +1,8 @@
-
 import 'package:flutter_test/flutter_test.dart';
 import 'package:xutils_pack/extensions/list_extension.dart';
 
 void main() {
   group('ListUtils Extensions', () {
-    
     // sortIt WITHOUT selector (Comparable only)
     test('sortIt sorts primitives ascending without selector', () {
       final nums = [3, 1, 5, 2];
@@ -25,7 +23,7 @@ void main() {
     test('sortIt throws when no selector provided for non-Comparable', () {
       final list = [
         {"id": 2},
-        {"id": 1}
+        {"id": 1},
       ];
 
       expect(() => list.sortIt(), throwsStateError);
@@ -46,14 +44,17 @@ void main() {
       expect(nums, [5, 3, 2, 1]);
     });
 
-    test('sortItSelf throws when no selector provided for non-Comparable list', () {
-      final items = [
-        {"name": "A"},
-        {"name": "B"}
-      ];
+    test(
+      'sortItSelf throws when no selector provided for non-Comparable list',
+      () {
+        final items = [
+          {"name": "A"},
+          {"name": "B"},
+        ];
 
-      expect(() => items.sortItSelf(), throwsStateError);
-    });
+        expect(() => items.sortItSelf(), throwsStateError);
+      },
+    );
 
     // sortIt WITH selector
     test('sortIt sorts custom objects using selector', () {
@@ -119,13 +120,10 @@ void main() {
       expect(grouped.length, 2);
       expect(grouped["Tokyo"]!.length, 2);
       expect(grouped["Osaka"]!.length, 1);
-      expect(
-        grouped["Tokyo"],
-        [
-          {"name": "Alice", "city": "Tokyo"},
-          {"name": "Charlie", "city": "Tokyo"},
-        ],
-      );
+      expect(grouped["Tokyo"], [
+        {"name": "Alice", "city": "Tokyo"},
+        {"name": "Charlie", "city": "Tokyo"},
+      ]);
     });
 
     test('elementAtOrNull returns element when index valid', () {

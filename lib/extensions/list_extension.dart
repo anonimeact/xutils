@@ -1,6 +1,5 @@
 /// A collection of useful List extensions to simplify common operations.
 extension ListUtils<T> on List<T> {
-
   /// Returns a **new list** sorted by the value produced by [selector].
   ///
   /// Does NOT modify the original list.

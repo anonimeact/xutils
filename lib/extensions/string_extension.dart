@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 import 'package:xutils_pack/extensions/datetime_extension.dart';
-import 'int_extension.dart'; 
+import 'int_extension.dart';
 
 /// Extension utilities for nullable Strings.
 ///
@@ -92,7 +92,10 @@ extension StringExtension on String? {
   /// Formats a parsed date string into the given [originFormat].
   ///
   /// Returns empty string if parsing fails.
-  String formatDateString({String originFormat = 'dd/MM/yyyy', String targetFormat = 'dd/MM/yyyy'}) {
+  String formatDateString({
+    String originFormat = 'dd/MM/yyyy',
+    String targetFormat = 'dd/MM/yyyy',
+  }) {
     if (this == null || this!.isEmpty) return '';
     final dt = toDateTime(originFormat: originFormat);
     if (dt == null) return "";
@@ -210,7 +213,11 @@ extension StringExtension on String? {
 
     if (start >= s.length || end <= start) return s;
 
-    final masked = s.replaceRange(start, end > s.length ? s.length : end, maskChar * (end - start));
+    final masked = s.replaceRange(
+      start,
+      end > s.length ? s.length : end,
+      maskChar * (end - start),
+    );
 
     return masked;
   }

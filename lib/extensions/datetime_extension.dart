@@ -74,7 +74,8 @@ extension DatetimeExtension on DateTime? {
       isSameDay(withThis: DateTime.now().subtract(const Duration(days: 1)));
 
   /// Returns true if the date is tomorrow.
-  bool isTomorrow() => isSameDay(withThis: DateTime.now().add(const Duration(days: 1)));
+  bool isTomorrow() =>
+      isSameDay(withThis: DateTime.now().add(const Duration(days: 1)));
 
   /// Returns the start of the day (00:00:00).
   DateTime? get beginningOfDay {
@@ -149,11 +150,14 @@ extension DatetimeExtension on DateTime? {
 
   DateTime? addHours({required int hours}) => this?.add(Duration(hours: hours));
 
-  DateTime? addMinutes({required int minutes}) => this?.add(Duration(minutes: minutes));
+  DateTime? addMinutes({required int minutes}) =>
+      this?.add(Duration(minutes: minutes));
 
-  DateTime? subtractDays({required int days}) => this?.subtract(Duration(days: days));
+  DateTime? subtractDays({required int days}) =>
+      this?.subtract(Duration(days: days));
 
-  DateTime? subtractHours({required int hours}) => this?.subtract(Duration(hours: hours));
+  DateTime? subtractHours({required int hours}) =>
+      this?.subtract(Duration(hours: hours));
 
   /// Returns the current age in full years.
   ///
@@ -192,13 +196,17 @@ extension DatetimeExtension on DateTime? {
 
   /// Difference in minutes.
   int diffInMinutes(DateTime? other, {bool abs = false}) {
-    final d = abs ? differenceAbs(withThis: other) : difference(withThis: other);
+    final d = abs
+        ? differenceAbs(withThis: other)
+        : difference(withThis: other);
     return d.inMinutes;
   }
 
   /// Difference in hours.
   int diffInHours(DateTime? other, {bool abs = false}) {
-    final d = abs ? differenceAbs(withThis: other) : difference(withThis: other);
+    final d = abs
+        ? differenceAbs(withThis: other)
+        : difference(withThis: other);
     return d.inHours;
   }
 }

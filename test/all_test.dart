@@ -1,15 +1,13 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
-import 'package:xutils_pack/extensions/string_extension.dart'; 
+import 'package:xutils_pack/extensions/string_extension.dart';
 
 void main() {
-
   setUpAll(() async {
     await initializeDateFormatting();
   });
   group('StringExtension Tests', () {
-
     test('numericOnly should extract numbers', () {
       expect("a1b2c3".numericOnly(), '123');
       expect("123abc".numericOnly(), '123');
@@ -47,33 +45,42 @@ void main() {
       expect(dateTimeID?.year, 2024);
       expect(dateTimeID?.month, 12);
       expect(dateTimeID?.day, 25);
-      
+
       // Test null case
       expect(null.toDateTime(originFormat: "dd/MM/yyyy"), null);
     });
-    
+
     test('formatDateString should format a parsed date string', () {
       // Test with an explicit format that works for id_ID locale
       final inputDateStr = "15/06/2023";
-      final formatted = inputDateStr.formatDateString(originFormat: 'dd/MM/yyyy', targetFormat: 'yyyy-MM-dd');
-      
-      expect(formatted, "2023-06-15"); 
+      final formatted = inputDateStr.formatDateString(
+        originFormat: 'dd/MM/yyyy',
+        targetFormat: 'yyyy-MM-dd',
+      );
+
+      expect(formatted, "2023-06-15");
 
       // Test null/invalid case
       final invalidDate = "not a date";
       expect(invalidDate.formatDateString(), "");
     });
 
-    test('formatTimestampEpoch should convert epoch string to formatted date', () {
-      // 1672531200000 ms is 2023-01-01 00:00:00 UTC (approx, depending on local TZ)
-      final epochString = "1672531200000"; 
-      expect(epochString.formatTimestampEpoch(targetFormat: 'yyyy'), '2023');
-      expect(epochString.formatTimestampEpoch(targetFormat: 'dd MMM yyyy'), isNotNull);
+    test(
+      'formatTimestampEpoch should convert epoch string to formatted date',
+      () {
+        // 1672531200000 ms is 2023-01-01 00:00:00 UTC (approx, depending on local TZ)
+        final epochString = "1672531200000";
+        expect(epochString.formatTimestampEpoch(targetFormat: 'yyyy'), '2023');
+        expect(
+          epochString.formatTimestampEpoch(targetFormat: 'dd MMM yyyy'),
+          isNotNull,
+        );
 
-      // Test invalid epoch string
-      expect("abc".formatTimestampEpoch(), null);
-      expect(null.formatTimestampEpoch(), null);
-    });
+        // Test invalid epoch string
+        expect("abc".formatTimestampEpoch(), null);
+        expect(null.formatTimestampEpoch(), null);
+      },
+    );
 
     // --- Test cases for Currency ---
 
