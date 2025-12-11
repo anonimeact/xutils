@@ -1,4 +1,4 @@
-import 'dart:math' as Math;
+import 'dart:math';
 
 import 'package:intl/intl.dart';
 import 'int_extension.dart'; // for CurrencyCountry enum
@@ -29,21 +29,21 @@ extension DoubleExtension on double? {
   /// ```
   double roundTo({required int fractionDigits}) {
     if (this == null) return 0.0;
-    final factor = Math.pow(10, fractionDigits);
+    final factor = pow(10, fractionDigits);
     return (this! * factor).round() / factor;
   }
 
   /// Floors the number to [fractionDigits] decimal places.
   double floorTo({required int fractionDigits}) {
     if (this == null) return 0.0;
-    final factor = Math.pow(10, fractionDigits);
+    final factor = pow(10, fractionDigits);
     return (this! * factor).floor() / factor;
   }
 
   /// Ceils the number to [fractionDigits] decimal places.
   double ceilTo({required int fractionDigits}) {
     if (this == null) return 0.0;
-    final factor = Math.pow(10, fractionDigits);
+    final factor = pow(10, fractionDigits);
     return (this! * factor).ceil() / factor;
   }
 

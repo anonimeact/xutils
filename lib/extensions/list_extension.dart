@@ -17,7 +17,7 @@ extension ListUtils<T> on List<T> {
     final copy = [...this];
 
     if (selector == null) {
-      if (isEmpty || this.first is! Comparable) {
+      if (isEmpty || first is! Comparable) {
         throw StateError(
           "sortIt() without selector requires T to be Comparable.",
         );
