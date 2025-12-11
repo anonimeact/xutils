@@ -74,8 +74,6 @@ extension StringExtension on String? {
   /// - [originFormat]: Optional. The format string for DateFormat. If null, ISO8601 UTC is assumed.
   /// - [asLocal]: Optional. Default true. If true, the resulting DateTime is converted to local time.
   ///
-  /// Returns:
-  /// - DateTime? the parsed DateTime, or null if parsing fails.
   /// Example usage:
   /// ```dart
   ///  Example 1: ISO8601 UTC string, default local conversion
@@ -95,20 +93,39 @@ extension StringExtension on String? {
   /// print(dtCustom);
   /// -> Output: 2025-12-13 01:44:00.000
   /// ```
+  /// The method will:
+  /// 1. Attempt parsing as ISO8601 (UTC) if [originFormat] is null.
+  /// 2. If ISO8601 fails, it tries a set of common formats defined in [commonFormats].
+  /// 3. Use the [_supportedLocales] for parsing non-UTC formats to handle locale-specific differences.
+  ///
+  /// Returns null if parsing fails.
   DateTime? toDateTime({String? originFormat, bool asLocal = true}) {
     if (this == null || this!.isEmpty) return null;
 
     DateTime? parsed;
 
-    // Parse as ISO8601 UTC if no format is provided
-    if (originFormat == null) {
-      try {
-        parsed = DateTime.parse(this!).toUtc();
-      } catch (e) {
-        debugPrint('toDateTime parse ISO8601 failed: $e');
-        return null;
-      }
-    } else {
+    // List of common date/time formats for fallback
+    final List<String> commonFormats = [
+      "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", // ISO8601 with milliseconds
+      "yyyy-MM-dd'T'HH:mm:ss'Z'", // ISO8601 without milliseconds
+      "yyyy-MM-dd HH:mm:ss.SSS", // Database format with milliseconds
+      "yyyy-MM-dd HH:mm:ss", // Database format without milliseconds
+      "yyyy/MM/dd HH:mm:ss.SSS",
+      "yyyy/MM/dd HH:mm:ss",
+      "dd/MM/yyyy HH:mm:ss",
+      "MM/dd/yyyy HH:mm:ss",
+      "dd-MM-yyyy HH:mm:ss",
+      "MM-dd-yyyy HH:mm:ss",
+      "dd/MM/yyyy",
+      "MM/dd/yyyy",
+      "yyyy-MM-dd",
+      "yyyy/MM/dd",
+      "MM-dd-yyyy",
+      "dd-MM-yyyy",
+    ];
+
+    // Attempt parsing using originFormat first, if provided
+    if (originFormat != null) {
       for (final locale in _supportedLocales) {
         try {
           parsed = DateFormat(originFormat, locale).parseStrict(this!);
@@ -119,32 +136,56 @@ extension StringExtension on String? {
           );
         }
       }
+    } else {
+      // Attempt ISO8601 parsing first
+      try {
+        parsed = DateTime.parse(this!);
+      } catch (_) {
+        // Fallback to common formats
+        for (final format in commonFormats) {
+          for (final locale in _supportedLocales) {
+            try {
+              parsed = DateFormat(format, locale).parseStrict(this!);
+              break;
+            } catch (_) {}
+          }
+          if (parsed != null) break;
+        }
+      }
     }
 
     if (parsed == null) return null;
 
-    // Convert to local time if asLocal = true
+    // Convert to local time if requested
     return asLocal ? parsed.toLocal() : parsed;
   }
 
-  /// Formats a parsed date string into the given [originFormat].
+  /// Converts a date string into a desired target format.
   ///
-  /// Returns empty string if parsing fails.
+  /// - [originFormat]: Optional. If provided, parses the string using this format.
+  ///   If null, attempts to parse using common formats via `toDateTime`.
+  /// - [targetFormat]: The desired output format. Defaults to 'dd/MM/yyyy'.
+  ///
+  /// Returns an empty string if parsing or formatting fails.
   String formatDateString({
-    String originFormat = 'dd/MM/yyyy',
+    String? originFormat,
     String targetFormat = 'dd/MM/yyyy',
   }) {
     if (this == null || this!.isEmpty) return '';
-    final dt = toDateTime(originFormat: originFormat);
-    if (dt == null) return "";
 
+    // Parse the string into DateTime
+    final dt = toDateTime(originFormat: originFormat);
+    if (dt == null) return '';
+
+    // Format DateTime into target format using supported locales
     for (final locale in _supportedLocales) {
       try {
         return DateFormat(targetFormat, locale).format(dt);
       } catch (e) {
-        debugPrint('formatDateString $locale');
+        debugPrint('formatDateString failed for locale $locale: $e');
       }
     }
+
     return '';
   }
 

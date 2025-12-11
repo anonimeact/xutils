@@ -1,3 +1,7 @@
+## 1.0.4
+
+* Add common format when parsing string date
+
 ## 1.0.3
 
 * Update toDateTime formating from string (originFormat null == try from using)

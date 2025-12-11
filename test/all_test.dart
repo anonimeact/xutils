@@ -50,6 +50,18 @@ void main() {
       expect(null.toDateTime(originFormat: "dd/MM/yyyy"), null);
     });
 
+    test('toDateTime should parse date strings with null origin format', () {
+      // Input format: dd/MM/yyyy
+      final dateStringID = "25/12/2024";
+      final dateTimeID = dateStringID.toDateTime();
+      expect(dateTimeID?.year, 2024);
+      expect(dateTimeID?.month, 12);
+      expect(dateTimeID?.day, 25);
+
+      // Test null case
+      expect(null.toDateTime(originFormat: "dd/MM/yyyy"), null);
+    });
+
     test('formatDateString should format a parsed date string', () {
       // Test with an explicit format that works for id_ID locale
       final inputDateStr = "15/06/2023";
@@ -64,6 +76,23 @@ void main() {
       final invalidDate = "not a date";
       expect(invalidDate.formatDateString(), "");
     });
+
+    test(
+      'formatDateString should format a parsed date string with null originFormat',
+      () {
+        // Test with an explicit format that works for id_ID locale
+        final inputDateStr = "15/06/2023";
+        final formatted = inputDateStr.formatDateString(
+          targetFormat: 'yyyy-MM-dd',
+        );
+
+        expect(formatted, "2023-06-15");
+
+        // Test null/invalid case
+        final invalidDate = "not a date";
+        expect(invalidDate.formatDateString(), "");
+      },
+    );
 
     test(
       'formatTimestampEpoch should convert epoch string to formatted date',
