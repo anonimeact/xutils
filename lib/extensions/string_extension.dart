@@ -70,23 +70,59 @@ extension StringExtension on String? {
     return dateTime.formatDate(targetFormat: targetFormat);
   }
 
-  /// Parses a date string using multiple fallback locales.
+  /// Parameters:
+  /// - [originFormat]: Optional. The format string for DateFormat. If null, ISO8601 UTC is assumed.
+  /// - [asLocal]: Optional. Default true. If true, the resulting DateTime is converted to local time.
   ///
-  /// Example:
+  /// Returns:
+  /// - DateTime? the parsed DateTime, or null if parsing fails.
+  /// Example usage:
   /// ```dart
-  /// "12/02/2024".toDateTime("dd/MM/yyyy");
+  /// // Example 1: ISO8601 UTC string, default local conversion
+  /// String utcString = "2025-12-13T01:44:43.147498Z";
+  /// DateTime? dtLocal = utcString.toDateTime();
+  /// print(dtLocal);
+  /// -> Output (if timezone UTC+7): 2025-12-13 08:44:43.147498
+  ///
+  /// Example 2: ISO8601 UTC string, keep as UTC
+  /// DateTime? dtUtc = utcString.toDateTime(asLocal: false);
+  /// print(dtUtc);
+  /// -> Output: 2025-12-13 01:44:43.147498Z
+  ///
+  /// Example 3: Custom format string
+  /// String dateString = "13/12/2025 01:44";
+  /// DateTime? dtCustom = dateString.toDateTime(originFormat: "dd/MM/yyyy HH:mm");
+  /// print(dtCustom);
+  /// -> Output: 2025-12-13 01:44:00.000
   /// ```
-  DateTime? toDateTime({String? originFormat}) {
+  DateTime? toDateTime({String? originFormat, bool asLocal = true}) {
     if (this == null || this!.isEmpty) return null;
 
-    for (final locale in _supportedLocales) {
+    DateTime? parsed;
+
+    // Parse as ISO8601 UTC if no format is provided
+    if (originFormat == null) {
       try {
-        return DateFormat(originFormat, locale).parseStrict(this!);
+        parsed = DateTime.parse(this!).toUtc();
       } catch (e) {
-        debugPrint('toDateTime $locale');
+        debugPrint('toDateTime parse ISO8601 failed: $e');
+        return null;
+      }
+    } else {
+      for (final locale in _supportedLocales) {
+        try {
+          parsed = DateFormat(originFormat, locale).parseStrict(this!);
+          break;
+        } catch (e) {
+          debugPrint('toDateTime parse with format "$originFormat" failed for locale $locale: $e');
+        }
       }
     }
-    return null;
+
+    if (parsed == null) return null;
+
+    // Convert to local time if asLocal = true
+    return asLocal ? parsed.toLocal() : parsed;
   }
 
   /// Formats a parsed date string into the given [originFormat].

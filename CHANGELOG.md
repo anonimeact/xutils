@@ -1,3 +1,7 @@
+## 1.0.3
+
+* Update toDateTime formating from string (originFormat null == try from using)
+
 ## 1.0.2
 
 * Add list extensions
