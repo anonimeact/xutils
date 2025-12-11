@@ -1,3 +1,7 @@
+## 1.0.5
+
+* Add simple example
+
 ## 1.0.4
 
 * Add common format when parsing string date
