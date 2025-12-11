@@ -78,7 +78,7 @@ extension StringExtension on String? {
   /// - DateTime? the parsed DateTime, or null if parsing fails.
   /// Example usage:
   /// ```dart
-  /// // Example 1: ISO8601 UTC string, default local conversion
+  ///  Example 1: ISO8601 UTC string, default local conversion
   /// String utcString = "2025-12-13T01:44:43.147498Z";
   /// DateTime? dtLocal = utcString.toDateTime();
   /// print(dtLocal);
@@ -114,7 +114,9 @@ extension StringExtension on String? {
           parsed = DateFormat(originFormat, locale).parseStrict(this!);
           break;
         } catch (e) {
-          debugPrint('toDateTime parse with format "$originFormat" failed for locale $locale: $e');
+          debugPrint(
+            'toDateTime parse with format "$originFormat" failed for locale $locale: $e',
+          );
         }
       }
     }
